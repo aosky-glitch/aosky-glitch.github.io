@@ -1,0 +1,67 @@
+name: iOS Shortcut - append post
+
+# 由 iOS 快捷指令（或任何 HTTP 客户端）调用 GitHub API 触发：
+#   POST https://api.github.com/repos/aosky-glitch/aosky-glitch.github.io/dispatches
+#   {"event_type":"microblog-post","client_payload":{"post":{ ... }}}
+#
+# 工作流把 post 追加进 data/posts.json、重新生成 feed.xml 并 commit 到 main。
+# 本仓库的 GitHub Pages 使用「Deploy from a branch (main / root)」，
+# 会在 push 后自动重新构建，无需额外部署步骤。
+
+on:
+  repository_dispatch:
+    types: [microblog-post]
+  workflow_dispatch:
+    inputs:
+      post_json:
+        description: '调试用：一条 post 的 JSON 字符串'
+        required: false
+        default: ''
+
+permissions:
+  contents: write
+
+jobs:
+  append:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 检出 main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: 准备 Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: 清洗并追加内容
+        env:
+          POST_JSON: ${{ inputs.post_json }}
+        run: python3 .github/scripts/append_post.py
+
+      - name: 提交并推送
+        env:
+          POST_TYPE: ${{ github.event.client_payload.post.type || 'manual' }}
+        run: |
+          set -e
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/posts.json feed.xml
+          if git diff --staged --quiet; then
+            echo "没有变更，跳过提交"
+            exit 0
+          fi
+          git commit -m "post: 来自 iOS 快捷指令的新内容 ($POST_TYPE)"
+          for i in 1 2 3; do
+            if git push origin main; then
+              echo "已推送到 main，Pages 将自动重建"
+              exit 0
+            fi
+            echo "推送冲突，尝试变基后重试 ($i/3)"
+            git fetch origin main
+            git rebase origin/main || git rebase --abort
+          done
+          echo "推送失败"
+          exit 1

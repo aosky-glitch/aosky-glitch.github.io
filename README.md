@@ -60,6 +60,8 @@
 
 > Token 只保存在当前浏览器的 `localStorage`，不会写入仓库，也只向 `api.github.com` 发请求。请勿在公共设备上保存 Token；不用时点「清除」。
 
+**在 iPhone / iPad 上发内容**：用 iOS「快捷指令」向仓库的 `repository_dispatch` 接口 POST 一个 JSON，GitHub Actions 会清洗、补全并追加进 `posts.json`，同时重生成 RSS，Pages 随后自动重建。完整搭建步骤（含从分享菜单发链接、8 种类型的请求体、图片上传与排错）见 **[SHORTCUTS.md](SHORTCUTS.md)**。
+
 ---
 
 ## 三、数据格式
@@ -128,6 +130,7 @@
 ├── index.html                  # 主站（时间线、筛选、搜索、灯箱）
 ├── admin.html                  # 可视化发布后台
 ├── 404.html                    # 404 页
+├── SHORTCUTS.md                # iOS 快捷指令发布教程
 ├── CNAME                       # 自定义域名 aicode.0728.im（勿删）
 ├── .nojekyll                   # 让 Pages 跳过 Jekyll，原样发布
 ├── data/
@@ -144,8 +147,12 @@
 │       ├── github.js           # GitHub Contents API 封装
 │       └── utils.js            # Markdown / 图标 / 转义 / 时间
 ├── .github/
-│   ├── workflows/validate.yml  # 数据校验（不参与部署）
-│   └── scripts/build.py        # 构建 / 校验脚本
+│   ├── workflows/
+│   │   ├── validate.yml         # 数据校验（不参与部署）
+│   │   └── shortcut.yml         # iOS 快捷指令 → 追加内容并推送
+│   └── scripts/
+│       ├── build.py             # 构建 / 校验脚本
+│       └── append_post.py       # 清洗并追加单条内容
 └── feed.xml                    # RSS（由构建脚本生成）
 ```
 
