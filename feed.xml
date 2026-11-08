@@ -7,6 +7,15 @@
     <language>zh-CN</language>
     <generator>GitHub Pages Microblog</generator>
     <item>
+      <title>快捷指令链路验证</title>
+      <link>https://aicode.0728.im/#post-20261109-074024-67</link>
+      <guid isPermaLink="false">https://aicode.0728.im/#post-20261109-074024-67</guid>
+      <pubDate>Mon, 09 Nov 2026 07:40:24 +0800</pubDate>
+      <description>这是一条通过 repositorydispatch 发出的测试内容。 用来验证「快捷指令 → Actions → Pages」整条链路，包含 Markdown 与中文引号「」、双引号 ""。</description>
+      <category>测试</category>
+      <category>快捷指令</category>
+    </item>
+    <item>
       <title>良渚的下午</title>
       <link>https://aicode.0728.im/#post-20261108-182000-01</link>
       <guid isPermaLink="false">https://aicode.0728.im/#post-20261108-182000-01</guid>
