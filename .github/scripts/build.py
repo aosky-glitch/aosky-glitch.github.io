@@ -51,7 +51,8 @@ def load_json(path: Path):
 def strip_markdown(text: str, limit: int = 260) -> str:
     s = re.sub(r"!\[[^\]]*\]\([^)]*\)", "", str(text))
     s = re.sub(r"\[([^\]]+)\]\([^)]*\)", r"\1", s)
-    s = re.sub(r"[`*_#>~|-]", "", s)
+    # 不删除下划线：正文里的变量名（如 repository_dispatch）需要原样保留
+    s = re.sub(r"[`*#>~|-]", "", s)
     s = re.sub(r"\s+", " ", s).strip()
     return s[:limit] + ("…" if len(s) > limit else "")
 
