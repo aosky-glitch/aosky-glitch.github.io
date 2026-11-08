@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="referrer" content="no-referrer">
+  <meta name="robots" content="noindex, nofollow">
+  <title>发布后台 · 微博客</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/admin.css">
+</head>
+<body class="adm-body">
+  <header class="adm-header">
+    <div class="adm-header-inner">
+      <div class="adm-brand">
+        <a class="adm-back" href="index.html" id="backLink"></a>
+        <div>
+          <h1>发布后台</h1>
+          <p>编辑内容 → 直接提交到 GitHub 仓库 → Pages 自动部署</p>
+        </div>
+      </div>
+      <div class="adm-header-actions">
+        <span class="adm-status" id="connBadge">未连接</span>
+        <button class="icon-btn adm-theme" id="themeToggle" type="button" aria-label="切换深浅色"></button>
+      </div>
+    </div>
+  </header>
+
+  <div class="adm-layout">
+    <!-- 左栏 -->
+    <aside class="adm-sidebar">
+
+      <section class="panel">
+        <h2><span class="step">1</span> 连接 GitHub 仓库</h2>
+        <label class="field">
+          <span>Personal Access Token <em>必填</em></span>
+          <div class="input-row">
+            <input type="password" id="cfgToken" placeholder="github_pat_… 或 ghp_…" autocomplete="off" spellcheck="false">
+            <button type="button" class="mini-btn" id="btnToggleToken" title="显示/隐藏">显示</button>
+          </div>
+        </label>
+        <div class="field-grid">
+          <label class="field"><span>Owner</span><input id="cfgOwner" placeholder="你的用户名或组织" autocomplete="off" spellcheck="false"></label>
+          <label class="field"><span>Repo</span><input id="cfgRepo" placeholder="仓库名" autocomplete="off" spellcheck="false"></label>
+        </div>
+        <label class="field"><span>Branch</span><input id="cfgBranch" value="main" autocomplete="off" spellcheck="false"></label>
+        <div class="btn-row">
+          <button type="button" class="btn" id="btnTest">测试连接</button>
+          <button type="button" class="btn btn-primary" id="btnSaveCfg">保存配置</button>
+          <button type="button" class="btn btn-quiet" id="btnClearCfg">清除</button>
+        </div>
+        <p class="hint">Token 仅保存在本机浏览器的 localStorage，不会写入仓库，也不会发往除 api.github.com 以外的地址。建议使用 <strong>Fine-grained token</strong>，只授予该仓库 <code>Contents: Read & Write</code> 权限。</p>
+        <div class="conn-result" id="connStatus" hidden></div>
+      </section>
+
+      <section class="panel">
+        <h2><span class="step">2</span> 仓库中的内容 <span class="panel-count" id="listCount">—</span></h2>
+        <div class="post-list" id="postList"><p class="muted">连接仓库后点击「拉取」查看已有内容。</p></div>
+        <button type="button" class="btn btn-block" id="btnReload">从仓库重新拉取</button>
+      </section>
+
+      <section class="panel">
+        <h2><span class="step">3</span> 数据与站点</h2>
+        <div class="btn-row">
+          <button type="button" class="btn" id="btnExport">导出 posts.json</button>
+          <label class="btn btn-file" for="importFile">导入并覆盖<input type="file" id="importFile" accept="application/json,.json" hidden></label>
+        </div>
+        <details class="site-editor" id="siteEditor">
+          <summary>站点设置（site.json）</summary>
+          <div class="site-fields">
+            <label class="field"><span>站点标题</span><input id="sTitle"></label>
+            <label class="field"><span>副标题</span><input id="sSubtitle"></label>
+            <label class="field"><span>简介</span><input id="sDescription"></label>
+            <div class="field-grid">
+              <label class="field"><span>昵称</span><input id="sAuthorName"></label>
+              <label class="field"><span>@handle</span><input id="sAuthorHandle"></label>
+            </div>
+            <label class="field"><span>个人签名</span><textarea id="sAuthorBio" rows="2"></textarea></label>
+            <div class="field-grid">
+              <label class="field"><span>所在地</span><input id="sAuthorLocation"></label>
+              <label class="field"><span>头像路径</span><input id="sAvatar" placeholder="media/avatar.svg"></label>
+            </div>
+            <div class="field-grid">
+              <label class="field"><span>封面图路径</span><input id="sCover" placeholder="media/cover.svg"></label>
+              <label class="field"><span>强调色</span><input id="sAccent" type="color" value="#d9564f"></label>
+            </div>
+            <div class="field-grid">
+              <label class="field"><span>每页条数</span><input id="sPageSize" type="number" min="1" max="100" value="8"></label>
+              <label class="field"><span>默认主题</span><select id="sThemeMode"><option value="auto">跟随系统</option><option value="light">浅色</option><option value="dark">深色</option></select></label>
+            </div>
+            <label class="field"><span>页脚文字</span><input id="sFooter"></label>
+            <label class="field"><span>导航链接（JSON 数组）</span><textarea id="sLinks" rows="4" spellcheck="false" placeholder='[{"label":"GitHub","url":"https://github.com/","icon":"github"}]'></textarea></label>
+            <div class="btn-row">
+              <button type="button" class="btn" id="btnLoadSite">读取站点设置</button>
+              <button type="button" class="btn btn-primary" id="btnSaveSite">保存到仓库</button>
+            </div>
+          </div>
+        </details>
+      </section>
+
+      <p class="side-foot">纯静态后台 · 无服务器 · 所有改动都是一次可回滚的 commit</p>
+    </aside>
+
+    <!-- 右栏 -->
+    <main class="adm-main">
+      <div class="adm-tabs" role="tablist">
+        <button type="button" class="adm-tab active" data-tab="compose">写内容</button>
+        <button type="button" class="adm-tab" data-tab="preview">实时预览</button>
+        <button type="button" class="adm-tab" data-tab="json">JSON 视图</button>
+        <span class="edit-badge" id="editBadge" hidden>正在编辑</span>
+      </div>
+
+      <!-- 写内容 -->
+      <section class="tab-panel" id="tab-compose">
+        <form id="postForm" autocomplete="off">
+          <div class="form-head">
+            <label class="field">
+              <span>内容类型</span>
+              <select id="fType">
+                <option value="text">文字 · 纯文本短想法</option>
+                <option value="image">图文 · 文字 + 一张图</option>
+                <option value="gallery">相册 · 多张图片</option>
+                <option value="article">文章 · 长文（Markdown）</option>
+                <option value="link">链接 · 链接卡片</option>
+                <option value="location">位置 · 地图坐标</option>
+                <option value="video">视频 · YouTube / 哔哩哔哩</option>
+                <option value="music">音乐 · 单曲 / 歌单</option>
+              </select>
+            </label>
+            <div class="type-tip" id="typeTip"></div>
+          </div>
+
+          <div class="field-grid">
+            <label class="field"><span>标题 <em>可选</em></span><input id="fTitle" placeholder="留空则只显示正文"></label>
+            <label class="field"><span>发布时间</span><input id="fDate" type="datetime-local"></label>
+          </div>
+
+          <label class="field">
+            <span>正文 <em>支持 Markdown</em></span>
+            <textarea id="fContent" rows="6" placeholder="写下此刻的想法…&#10;&#10;支持 **粗体**、*斜体*、> 引用、- 列表、`代码`、[链接](https://…)"></textarea>
+          </label>
+
+          <div class="field-grid">
+            <label class="field"><span>标签 <em>逗号分隔</em></span><input id="fTags" placeholder="生活, 摄影, 随想"></label>
+            <label class="check-field"><input type="checkbox" id="fPinned"><span>设为置顶</span></label>
+          </div>
+
+          <div class="type-fields" id="typeFields"></div>
+
+          <div class="form-actions">
+            <button type="button" class="btn btn-primary btn-lg" id="btnPublish">发布到 GitHub 仓库</button>
+            <button type="button" class="btn" id="btnPreview">预览效果</button>
+            <button type="button" class="btn btn-quiet" id="btnClear">清空表单</button>
+            <button type="button" class="btn btn-quiet" id="btnCancelEdit" hidden>取消编辑</button>
+          </div>
+          <p class="publish-hint" id="publishHint"></p>
+        </form>
+      </section>
+
+      <!-- 预览 -->
+      <section class="tab-panel" id="tab-preview" hidden>
+        <div class="preview-head">
+          <span>以下效果与使用主站主题渲染的结果一致</span>
+          <button type="button" class="btn" id="btnRefreshPreview">刷新预览</button>
+        </div>
+        <div class="feed preview-feed" id="previewWrap"></div>
+      </section>
+
+      <!-- JSON -->
+      <section class="tab-panel" id="tab-json" hidden>
+        <p class="hint">当前这条内容的 JSON。可直接修改后点「应用到表单」；熟悉格式的用户也可以直接编辑仓库里的 <code>data/posts.json</code>。</p>
+        <textarea id="jsonEditor" class="json-editor" spellcheck="false"></textarea>
+        <div class="btn-row">
+          <button type="button" class="btn btn-primary" id="btnApplyJson">应用到表单</button>
+          <button type="button" class="btn" id="btnRefreshJson">从表单重新生成</button>
+          <button type="button" class="btn" id="btnCopyJson">复制 JSON</button>
+        </div>
+        <div class="json-error" id="jsonError" hidden></div>
+      </section>
+    </main>
+  </div>
+
+  <!-- 上传用隐藏文件选择器 -->
+  <input type="file" id="filePicker" hidden>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script type="module" src="assets/js/admin.js"></script>
+</body>
+</html>

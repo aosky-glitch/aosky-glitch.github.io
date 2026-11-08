@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" width="1200" height="900" role="img">
+  <defs>
+    <linearGradient id="p5bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#a99bc4"/><stop offset="1" stop-color="#544b7a"/>
+    </linearGradient>
+    <linearGradient id="p5sun" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#e8e2f2" stop-opacity=".85"/>
+      <stop offset="1" stop-color="#e8e2f2" stop-opacity=".15"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="900" fill="url(#p5bg)"/>
+  <circle cx="888" cy="252" r="171" fill="url(#p5sun)"/>
+  <circle cx="888" cy="252" r="171" fill="none" stroke="#e8e2f2" stroke-opacity=".35" stroke-width="2"/>
+  <circle cx="455" cy="335" r="6" fill="#e8e2f2" opacity="0.05"/><circle cx="628" cy="574" r="13" fill="#e8e2f2" opacity="0.07500000000000001"/><circle cx="801" cy="93" r="20" fill="#e8e2f2" opacity="0.1"/><circle cx="974" cy="332" r="27" fill="#e8e2f2" opacity="0.125"/><circle cx="1147" cy="571" r="8" fill="#e8e2f2" opacity="0.05"/><circle cx="120" cy="90" r="15" fill="#e8e2f2" opacity="0.07500000000000001"/><circle cx="293" cy="329" r="22" fill="#e8e2f2" opacity="0.1"/><circle cx="466" cy="568" r="29" fill="#e8e2f2" opacity="0.125"/><circle cx="639" cy="87" r="10" fill="#e8e2f2" opacity="0.05"/><circle cx="812" cy="326" r="17" fill="#e8e2f2" opacity="0.07500000000000001"/><circle cx="985" cy="565" r="24" fill="#e8e2f2" opacity="0.1"/><circle cx="1158" cy="84" r="31" fill="#e8e2f2" opacity="0.125"/><circle cx="131" cy="323" r="12" fill="#e8e2f2" opacity="0.05"/><circle cx="304" cy="562" r="19" fill="#e8e2f2" opacity="0.07500000000000001"/>
+  <path d="M0 612 Q 264 468 528 594 T 1200 540 L 1200 900 L 0 900 Z" fill="#544b7a" opacity=".38"/>
+  <path d="M0 720 Q 360 612 696 711 T 1200 666 L 1200 900 L 0 900 Z" fill="#544b7a" opacity=".62"/>
+  <g stroke="#e8e2f2" stroke-opacity=".28" stroke-width="1.5" fill="none">
+    <path d="M96 144 H 408"/>
+    <path d="M96 180 H 288"/>
+  </g>
+  <text x="96" y="117" font-family="Georgia,serif" font-size="29" letter-spacing="6" fill="#e8e2f2" opacity=".85">FRAGMENT / 05</text>
+  <text x="96" y="832" font-family="Georgia,serif" font-size="23" letter-spacing="3" fill="#e8e2f2" opacity=".7">A MOMENT KEPT IN THE REPO</text>
+</svg>

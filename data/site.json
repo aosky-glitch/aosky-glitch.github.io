@@ -1,0 +1,30 @@
+{
+  "title": "拾光",
+  "url": "https://aicode.0728.im/",
+  "subtitle": "MICROBLOG / 生活的碎片归档",
+  "description": "文字、照片、位置、音乐与视频，都安静地存放在一个 GitHub 仓库里。",
+  "author": {
+    "name": "林间",
+    "handle": "@linjian",
+    "bio": "写代码，拍照片，走很长的路。这里存放一些不必群发的念头。",
+    "avatar": "media/avatar.svg",
+    "location": "杭州 · 中国"
+  },
+  "cover": "media/cover.svg",
+  "links": [
+    { "label": "GitHub", "url": "https://github.com/aosky-glitch/aosky-glitch.github.io", "icon": "github" },
+    { "label": "RSS", "url": "feed.xml", "icon": "rss" },
+    { "label": "写点什么", "url": "admin.html", "icon": "pen" }
+  ],
+  "theme": {
+    "accent": "#d9564f",
+    "defaultMode": "auto"
+  },
+  "pageSize": 8,
+  "footer": "内容即数据 · 全部存放于 GitHub 仓库 · 由 GitHub Pages 托管",
+  "repo": {
+    "owner": "aosky-glitch",
+    "name": "aosky-glitch.github.io",
+    "branch": "main"
+  }
+}

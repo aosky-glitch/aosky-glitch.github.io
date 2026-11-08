@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="auto">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>页面不存在 · 微博客</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <style>
+    .nf { min-height: 100vh; display: grid; place-items: center; padding: 24px; text-align: center; }
+    .nf-card { max-width: 480px; }
+    .nf-num { font-family: var(--font-serif); font-size: 96px; line-height: 1; color: var(--accent); opacity: .85; }
+    .nf h1 { font-family: var(--font-serif); font-size: 22px; margin: 8px 0 6px; color: var(--text); }
+    .nf p { color: var(--text-2); font-size: 14px; margin: 0 0 22px; }
+    .nf a { display: inline-flex; align-items: center; gap: 8px; padding: 10px 22px; border-radius: 999px; background: var(--accent); color: #fff; font-size: 13.5px; font-weight: 600; }
+    .nf a:hover { text-decoration: none; filter: brightness(1.08); }
+  </style>
+</head>
+<body>
+  <div class="nf">
+    <div class="nf-card">
+      <div class="nf-num">404</div>
+      <h1>这条内容不在仓库里</h1>
+      <p>页面可能被移动或删除了。回到时间线，看看还留着些什么。</p>
+      <a href="index.html">返回首页</a>
+    </div>
+  </div>
+  <script>
+    const saved = localStorage.getItem('mb-theme');
+    document.documentElement.dataset.theme = saved && saved !== 'auto' ? saved
+      : (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    fetch('data/site.json').then(r => r.ok ? r.json() : null).then(s => {
+      if (s?.theme?.accent) document.documentElement.style.setProperty('--accent', s.theme.accent);
+      if (s?.title) document.title = `页面不存在 · ${s.title}`;
+    }).catch(() => {});
+  </script>
+</body>
+</html>

@@ -1,0 +1,30 @@
+name: Validate content data
+
+# 本仓库使用 GitHub Pages 的「Deploy from a branch (main / root)」方式部署。
+# 这个工作流只做数据校验，不调用 deploy-pages，避免与分支部署冲突。
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'data/**'
+      - '.github/scripts/**'
+      - '.github/workflows/validate.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 检出仓库
+        uses: actions/checkout@v4
+
+      - name: 准备 Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: 校验数据并生成 RSS 预览
+        run: python3 .github/scripts/build.py

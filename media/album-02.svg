@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600" width="600" height="600" role="img">
+  <defs><linearGradient id="ab2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f2a488"/><stop offset="1" stop-color="#a2506a"/></linearGradient></defs>
+  <rect width="600" height="600" fill="url(#ab2)"/>
+  <g fill="none" stroke="#fadfd6" stroke-opacity=".5">
+    <circle cx="300" cy="300" r="90" stroke-width="2"/><circle cx="300" cy="300" r="140" stroke-width="1"/>
+    <circle cx="300" cy="300" r="190" stroke-width="1"/><circle cx="300" cy="300" r="240" stroke-width="1"/>
+  </g>
+  <circle cx="300" cy="300" r="34" fill="#fadfd6" opacity=".8"/>
+  <circle cx="300" cy="300" r="9" fill="#a2506a"/>
+  <text x="40" y="520" font-family="Georgia,serif" font-size="34" letter-spacing="8" fill="#fadfd6">NIGHT CODE</text>
+  <text x="40" y="560" font-family="Georgia,serif" font-size="18" letter-spacing="5" fill="#fadfd6" opacity=".7">SIDE A / 2026</text>
+</svg>

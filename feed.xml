@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+  <channel>
+    <title>拾光</title>
+    <link>https://aicode.0728.im/</link>
+    <description>文字、照片、位置、音乐与视频，都安静地存放在一个 GitHub 仓库里。</description>
+    <language>zh-CN</language>
+    <generator>GitHub Pages Microblog</generator>
+    <item>
+      <title>良渚的下午</title>
+      <link>https://aicode.0728.im/#post-20261108-182000-01</link>
+      <guid isPermaLink="false">https://aicode.0728.im/#post-20261108-182000-01</guid>
+      <pubDate>Sun, 08 Nov 2026 18:20:00 +0800</pubDate>
+      <description>周末去了良渚文化村。光线很好，梧桐叶落了一地，走在路上能听到很清脆的声音。 拍了一整卷，挑了五张放这儿。</description>
+      <category>摄影</category>
+      <category>周末</category>
+      <category>杭州</category>
+    </item>
+    <item>
+      <title>把想法写下来，它就不再占用脑子里的内存了。 这大概是我持续记碎片日志的唯一理由—…</title>
+      <link>https://aicode.0728.im/#post-20261107-210500-01</link>
+      <guid isPermaLink="false">https://aicode.0728.im/#post-20261107-210500-01</guid>
+      <pubDate>Sat, 07 Nov 2026 21:05:00 +0800</pubDate>
+      <description>把想法写下来，它就不再占用脑子里的内存了。 这大概是我持续记碎片日志的唯一理由——不是为了被看见，是为了腾出空间。</description>
+      <category>随想</category>
+    </item>
+    <item>
+      <title>茅家埠这一带人少，水面很静。中午在这儿坐了半小时，什么也没做。 有时候「什么也没…</title>
+      <link>https://aicode.0728.im/#post-20261106-123000-01</link>
+      <guid isPermaLink="false">https://aicode.0728.im/#post-20261106-123000-01</guid>
+      <pubDate>Fri, 06 Nov 2026 12:30:00 +0800</pubDate>
+      <description>茅家埠这一带人少，水面很静。中午在这儿坐了半小时，什么也没做。 有时候「什么也没做」本身就是一个完整的下午。</description>
+      <category>杭州</category>
+      <category>散步</category>
+    </item>
+    <item>
+      <title>最近单曲循环的一首。早上写代码之前先放一遍，像是给一天定个调子。</title>
+      <link>https://aicode.0728.im/#post-20261105-091000-01</link>
+      <guid isPermaLink="false">https://aicode.0728.im/#post-20261105-091000-01</guid>
+      <pubDate>Thu, 05 Nov 2026 09:10:00 +0800</pubDate>
+      <description>最近单曲循环的一首。早上写代码之前先放一遍，像是给一天定个调子。</description>
+      <category>音乐</category>
+    </item>
+    <item>
+      <title>看完这个讲「如何用 20 行代码做一个光线追踪器」的视频，顺手自己实现了一遍。讲…</title>
+      <link>https://aicode.0728.im/#post-20261103-201500-01</link>
+      <guid isPermaLink="false">https://aicode.0728.im/#post-20261103-201500-01</guid>
+      <pubDate>Tue, 03 Nov 2026 20:15:00 +0800</pubDate>
+      <description>看完这个讲「如何用 20 行代码做一个光线追踪器」的视频，顺手自己实现了一遍。讲得真清楚。</description>
+      <category>编程</category>
+      <category>收藏</category>
+    </item>
+    <item>
+      <title>为什么我把博客搬进了 GitHub 仓库</title>
+      <link>https://aicode.0728.im/#post-20261101-140000-01</link>
+      <guid isPermaLink="false">https://aicode.0728.im/#post-20261101-140000-01</guid>
+      <pubDate>Sun, 01 Nov 2026 14:00:00 +0800</pubDate>
+      <description>一切都是文件 过去几年我换过四套博客系统：先是自建 WordPress，后来是静态生成器，再后来是一个带数据库的轻量 CMS。每次迁移都很痛苦，因为内容总是被锁在别人的数据结构里。 后来我想明白了一件事：我写的东西其实只是一些文本、几张图片和几个链接。它们完全可以是仓库里的一个 JSON 文件。 文本就是字符串 照片是 media/ 目录里的文件 音乐和视频只是一个 ID 时间点是一个 ISO 字符串 当数据不再需要数据库，备份这件事就自动完成了。 发布也是一次 commit 现在我在后台写完一条内容，点击发布，浏…</description>
+      <category>技术</category>
+      <category>写作</category>
+      <category>长期主义</category>
+    </item>
+    <item>
+      <title>读到一个很受用的观点：工具的价值不在于功能多，而在于它是否减少了你做决定次数。存…</title>
+      <link>https://aicode.0728.im/#post-20261028-102200-01</link>
+      <guid isPermaLink="false">https://aicode.0728.im/#post-20261028-102200-01</guid>
+      <pubDate>Wed, 28 Oct 2026 10:22:00 +0800</pubDate>
+      <description>读到一个很受用的观点：工具的价值不在于功能多，而在于它是否减少了你做决定次数。存个档。</description>
+      <category>阅读</category>
+      <category>收藏</category>
+    </item>
+    <item>
+      <title>傍晚六点半，天色正好卡在蓝和橙之间。站在天桥上拍的，没调色。</title>
+      <link>https://aicode.0728.im/#post-20261025-194000-01</link>
+      <guid isPermaLink="false">https://aicode.0728.im/#post-20261025-194000-01</guid>
+      <pubDate>Sun, 25 Oct 2026 19:40:00 +0800</pubDate>
+      <description>傍晚六点半，天色正好卡在蓝和橙之间。站在天桥上拍的，没调色。</description>
+      <category>摄影</category>
+      <category>日常</category>
+    </item>
+    <item>
+      <title>夜里整理了一份自定义歌单。音频文件放在仓库的 media/ 里，用原生播放器顺序…</title>
+      <link>https://aicode.0728.im/#post-20261020-230000-01</link>
+      <guid isPermaLink="false">https://aicode.0728.im/#post-20261020-230000-01</guid>
+      <pubDate>Tue, 20 Oct 2026 23:00:00 +0800</pubDate>
+      <description>夜里整理了一份自定义歌单。音频文件放在仓库的 media/ 里，用原生播放器顺序播放——不依赖任何第三方平台。</description>
+      <category>音乐</category>
+      <category>自建</category>
+    </item>
+    <item>
+      <title>一个讲城市里「被忽略的缝隙空间」的短片，画面很克制。存着慢慢看。</title>
+      <link>https://aicode.0728.im/#post-20261015-083000-01</link>
+      <guid isPermaLink="false">https://aicode.0728.im/#post-20261015-083000-01</guid>
+      <pubDate>Thu, 15 Oct 2026 08:30:00 +0800</pubDate>
+      <description>一个讲城市里「被忽略的缝隙空间」的短片，画面很克制。存着慢慢看。</description>
+      <category>视频</category>
+      <category>城市</category>
+    </item>
+    <item>
+      <title>桌面的三件小事</title>
+      <link>https://aicode.0728.im/#post-20261009-164500-01</link>
+      <guid isPermaLink="false">https://aicode.0728.im/#post-20261009-164500-01</guid>
+      <pubDate>Fri, 09 Oct 2026 16:45:00 +0800</pubDate>
+      <description>换了新的桌面布局，顺手拍了三张。</description>
+      <category>日常</category>
+    </item>
+    <item>
+      <title>关于这个站点 这里是一个没有数据库的微博客：所有内容都存放在 data/post…</title>
+      <link>https://aicode.0728.im/#post-20261002-110000-01</link>
+      <guid isPermaLink="false">https://aicode.0728.im/#post-20261002-110000-01</guid>
+      <pubDate>Fri, 02 Oct 2026 11:00:00 +0800</pubDate>
+      <description>关于这个站点 这里是一个没有数据库的微博客：所有内容都存放在 data/posts.json，图片放在 media/，页面由 GitHub Pages 直接托管。 支持文本、图文、相册、长文章、链接卡片、位置、YouTube / 哔哩哔哩视频、音乐单曲与歌单。想写点什么，点右上角「写点什么」进入发布后台。</description>
+      <category>置顶</category>
+      <category>关于</category>
+    </item>
+  </channel>
+</rss>

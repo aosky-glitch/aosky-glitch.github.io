@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="auto">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="referrer" content="no-referrer">
+  <meta name="color-scheme" content="light dark">
+  <meta name="description" content="一个把文字、照片、位置、音乐和视频都存进 GitHub 仓库的微博客。">
+  <title>拾光 · 微博客</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://api.github.com">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+  <a class="skip-link" href="#feed">跳到内容</a>
+
+  <!-- 顶部资料区 -->
+  <header class="hero" id="hero">
+    <div class="hero-cover" id="heroCover" aria-hidden="true"></div>
+    <div class="hero-topbar">
+      <a class="brand" href="./">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span class="brand-title" id="brandTitle">微博客</span>
+      </a>
+      <nav class="hero-actions" aria-label="站点操作">
+        <button class="icon-btn" id="themeToggle" type="button" title="切换深浅色" aria-label="切换深浅色"></button>
+        <a class="ghost-btn" href="admin.html" id="adminLink">写点什么</a>
+      </nav>
+    </div>
+
+    <div class="hero-profile" id="heroProfile">
+      <div class="profile-skeleton"></div>
+    </div>
+  </header>
+
+  <main class="container" id="main">
+    <!-- 工具条 -->
+    <section class="toolbar" aria-label="内容筛选">
+      <div class="filters" id="filters" role="group" aria-label="按类型筛选"></div>
+      <label class="search-box" for="searchInput">
+        <span class="search-icon" id="searchIcon" aria-hidden="true"></span>
+        <input id="searchInput" type="search" placeholder="搜索内容、标签、标题…" autocomplete="off" spellcheck="false">
+        <button class="search-clear" id="searchClear" type="button" hidden aria-label="清空搜索"></button>
+      </label>
+    </section>
+
+    <div class="feed-summary" id="feedSummary" aria-live="polite"></div>
+
+    <!-- 内容流 -->
+    <div class="feed" id="feed" aria-live="polite">
+      <div class="loading-state" id="loadingState">
+        <span class="spinner"></span>
+        <p>正在从仓库读取数据…</p>
+      </div>
+    </div>
+
+    <div class="empty-state" id="emptyState" hidden>
+      <div class="empty-icon"></div>
+      <h2>这里暂时空空的</h2>
+      <p id="emptyHint">换一个筛选条件或清空搜索试试。</p>
+      <button class="ghost-btn" id="resetFilters" type="button">重置筛选</button>
+    </div>
+
+    <div class="load-more-wrap" id="loadMoreWrap" hidden>
+      <button class="load-more-btn" id="loadMoreBtn" type="button">加载更多</button>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <p id="footerText"></p>
+    <p class="footer-tech">Static · No database · Powered by GitHub Pages</p>
+  </footer>
+
+  <!-- 图片灯箱 -->
+  <div class="lightbox" id="lightbox" hidden role="dialog" aria-modal="true" aria-label="图片查看器">
+    <button class="lb-close" id="lbClose" type="button" aria-label="关闭"></button>
+    <button class="lb-nav lb-prev" id="lbPrev" type="button" aria-label="上一张"></button>
+    <figure class="lb-figure">
+      <img id="lbImage" src="" alt="">
+      <figcaption id="lbCaption"></figcaption>
+    </figure>
+    <button class="lb-nav lb-next" id="lbNext" type="button" aria-label="下一张"></button>
+    <div class="lb-counter" id="lbCounter"></div>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script type="module" src="assets/js/app.js"></script>
+</body>
+</html>

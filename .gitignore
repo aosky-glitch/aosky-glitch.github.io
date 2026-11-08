@@ -1,0 +1,11 @@
+_site/
+.DS_Store
+Thumbs.db
+__pycache__/
+*.pyc
+.env
+.env.local
+node_modules/
+.idea/
+.vscode/
+.codebuddy/
