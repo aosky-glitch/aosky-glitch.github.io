@@ -2,6 +2,12 @@
 <html lang="zh-CN" data-theme="light">
 <head>
   <meta charset="utf-8">
+  <script>
+    /* 后台会处理 GitHub Token，必须走 HTTPS；本地 localhost 预览不受影响。 */
+    if (location.protocol === 'http:' && !/^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname)) {
+      location.replace('https://' + location.host + location.pathname + location.search + location.hash);
+    }
+  </script>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="referrer" content="no-referrer">
   <meta name="robots" content="noindex, nofollow">

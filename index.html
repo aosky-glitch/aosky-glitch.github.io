@@ -2,6 +2,13 @@
 <html lang="zh-CN" data-theme="auto">
 <head>
   <meta charset="utf-8">
+  <script>
+    /* 自定义域名证书由前置 CDN 提供，GitHub 侧无法强制 HTTPS；
+       这里做前端兜底升级，避免明文 HTTP。本地 localhost 预览不受影响。 */
+    if (location.protocol === 'http:' && !/^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname)) {
+      location.replace('https://' + location.host + location.pathname + location.search + location.hash);
+    }
+  </script>
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="referrer" content="no-referrer">
   <meta name="color-scheme" content="light dark">
