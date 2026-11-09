@@ -1,20 +1,5 @@
 [
   {
-    "type": "link",
-    "content": "[BOT-E2E-20261109-2218] 机器人链路实测：中文「」与双引号 \"\" 及 **Markdown** 均正常",
-    "tags": [
-      "BOT实测",
-      "链路验证"
-    ],
-    "link": {
-      "url": "https://example.com/bot-e2e",
-      "title": "example.com",
-      "site": "example.com"
-    },
-    "created_at": "2026-11-09T22:22:23+08:00",
-    "id": "20261109-222223-49"
-  },
-  {
     "content": "今天天气不错！躺阳台晒太阳爽歪歪。",
     "tags": [
       "说说"
