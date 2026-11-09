@@ -5,13 +5,37 @@
     "created_at": "2026-11-08T18:20:00+08:00",
     "title": "良渚的下午",
     "content": "**周末去了良渚文化村**。光线很好，梧桐叶落了一地，走在路上能听到很清脆的声音。\n\n拍了一整卷，挑了五张放这儿。",
-    "tags": ["摄影", "周末", "杭州"],
+    "tags": [
+      "摄影",
+      "周末",
+      "杭州"
+    ],
     "images": [
-      { "src": "media/photo-01.svg", "alt": "秋日午后的梧桐大道", "caption": "梧桐大道 · 15:40" },
-      { "src": "media/photo-02.svg", "alt": "草地与远山", "caption": "大草坪" },
-      { "src": "media/photo-03.svg", "alt": "建筑的光影", "caption": "美丽洲教堂外立面" },
-      { "src": "media/photo-04.svg", "alt": "水边的芦苇", "caption": "水边" },
-      { "src": "media/photo-05.svg", "alt": "黄昏的窗", "caption": "回程前" }
+      {
+        "src": "media/photo-01.svg",
+        "alt": "秋日午后的梧桐大道",
+        "caption": "梧桐大道 · 15:40"
+      },
+      {
+        "src": "media/photo-02.svg",
+        "alt": "草地与远山",
+        "caption": "大草坪"
+      },
+      {
+        "src": "media/photo-03.svg",
+        "alt": "建筑的光影",
+        "caption": "美丽洲教堂外立面"
+      },
+      {
+        "src": "media/photo-04.svg",
+        "alt": "水边的芦苇",
+        "caption": "水边"
+      },
+      {
+        "src": "media/photo-05.svg",
+        "alt": "黄昏的窗",
+        "caption": "回程前"
+      }
     ],
     "layout": "grid"
   },
@@ -20,14 +44,19 @@
     "type": "text",
     "created_at": "2026-11-07T21:05:00+08:00",
     "content": "把想法写下来，它就不再占用脑子里的内存了。\n\n这大概是我持续记碎片日志的唯一理由——**不是为了被看见，是为了腾出空间**。",
-    "tags": ["随想"]
+    "tags": [
+      "随想"
+    ]
   },
   {
     "id": "20261106-123000-01",
     "type": "location",
     "created_at": "2026-11-06T12:30:00+08:00",
     "content": "茅家埠这一带人少，水面很静。中午在这儿坐了半小时，什么也没做。\n\n> 有时候「什么也没做」本身就是一个完整的下午。",
-    "tags": ["杭州", "散步"],
+    "tags": [
+      "杭州",
+      "散步"
+    ],
     "location": {
       "name": "茅家埠 · 西湖",
       "address": "浙江省杭州市西湖区杨公堤",
@@ -42,7 +71,9 @@
     "type": "music",
     "created_at": "2026-11-05T09:10:00+08:00",
     "content": "最近单曲循环的一首。早上写代码之前先放一遍，像是给一天定个调子。",
-    "tags": ["音乐"],
+    "tags": [
+      "音乐"
+    ],
     "music": {
       "platform": "netease",
       "kind": "single",
@@ -58,7 +89,10 @@
     "type": "video",
     "created_at": "2026-11-03T20:15:00+08:00",
     "content": "看完这个讲「如何用 20 行代码做一个光线追踪器」的视频，顺手自己实现了一遍。讲得真清楚。",
-    "tags": ["编程", "收藏"],
+    "tags": [
+      "编程",
+      "收藏"
+    ],
     "video": {
       "platform": "bilibili",
       "bvid": "BV1xx411c7mD",
@@ -76,7 +110,11 @@
     "title": "为什么我把博客搬进了 GitHub 仓库",
     "cover": "media/photo-07.svg",
     "reading_time": "约 6 分钟",
-    "tags": ["技术", "写作", "长期主义"],
+    "tags": [
+      "技术",
+      "写作",
+      "长期主义"
+    ],
     "content": "## 一切都是文件\n\n过去几年我换过四套博客系统：先是自建 WordPress，后来是静态生成器，再后来是一个带数据库的轻量 CMS。每次迁移都很痛苦，因为**内容总是被锁在别人的数据结构里**。\n\n后来我想明白了一件事：我写的东西其实只是一些文本、几张图片和几个链接。它们完全可以是仓库里的一个 JSON 文件。\n\n- 文本就是字符串\n- 照片是 `media/` 目录里的文件\n- 音乐和视频只是一个 ID\n- 时间点是一个 ISO 字符串\n\n> 当数据不再需要数据库，备份这件事就自动完成了。\n\n## 发布也是一次 commit\n\n现在我在后台写完一条内容，点击发布，浏览器直接调用 GitHub 的 Contents API，把 `data/posts.json` 更新并 commit 到仓库。几十秒后 GitHub Actions 重新部署站点。\n\n整个过程没有服务器、没有数据库、没有运维，只有一次可以 `git revert` 的提交。写错了？回滚就好。\n\n## 代价\n\n当然有代价：没有评论、没有实时统计、发布要等几十秒。但对我来说这些都不是必需项。**一个不会丢、不会被平台关停、十年后还能 `git clone` 下来的博客**，比什么都重要。\n\n如果你也想搭一个，这个仓库可以直接 fork。"
   },
   {
@@ -84,7 +122,10 @@
     "type": "link",
     "created_at": "2026-10-28T10:22:00+08:00",
     "content": "读到一个很受用的观点：工具的价值不在于功能多，而在于它是否**减少了你做决定次数**。存个档。",
-    "tags": ["阅读", "收藏"],
+    "tags": [
+      "阅读",
+      "收藏"
+    ],
     "link": {
       "url": "https://github.com/",
       "title": "GitHub · 让协作回到代码本身",
@@ -98,9 +139,16 @@
     "type": "image",
     "created_at": "2026-10-25T19:40:00+08:00",
     "content": "傍晚六点半，天色正好卡在蓝和橙之间。站在天桥上拍的，没调色。",
-    "tags": ["摄影", "日常"],
+    "tags": [
+      "摄影",
+      "日常"
+    ],
     "images": [
-      { "src": "media/photo-06.svg", "alt": "黄昏的城市天际线", "caption": "ISO 400 · f/2.8" }
+      {
+        "src": "media/photo-06.svg",
+        "alt": "黄昏的城市天际线",
+        "caption": "ISO 400 · f/2.8"
+      }
     ]
   },
   {
@@ -108,7 +156,10 @@
     "type": "music",
     "created_at": "2026-10-20T23:00:00+08:00",
     "content": "夜里整理了一份自定义歌单。音频文件放在仓库的 `media/` 里，用原生播放器顺序播放——不依赖任何第三方平台。",
-    "tags": ["音乐", "自建"],
+    "tags": [
+      "音乐",
+      "自建"
+    ],
     "music": {
       "platform": "custom",
       "kind": "playlist",
@@ -116,9 +167,21 @@
       "artist": "自定义播放列表",
       "cover": "media/album-02.svg",
       "tracks": [
-        { "title": "示例曲目 01 · 雨", "artist": "示例音乐人", "src": "" },
-        { "title": "示例曲目 02 · 灯", "artist": "示例音乐人", "src": "" },
-        { "title": "示例曲目 03 · 夜行", "artist": "示例音乐人", "src": "" }
+        {
+          "title": "示例曲目 01 · 雨",
+          "artist": "示例音乐人",
+          "src": ""
+        },
+        {
+          "title": "示例曲目 02 · 灯",
+          "artist": "示例音乐人",
+          "src": ""
+        },
+        {
+          "title": "示例曲目 03 · 夜行",
+          "artist": "示例音乐人",
+          "src": ""
+        }
       ],
       "note": "把音频文件上传到仓库后填入 src 即可播放，例如 media/audio/01.mp3。"
     }
@@ -128,7 +191,10 @@
     "type": "video",
     "created_at": "2026-10-15T08:30:00+08:00",
     "content": "一个讲城市里「被忽略的缝隙空间」的短片，画面很克制。存着慢慢看。",
-    "tags": ["视频", "城市"],
+    "tags": [
+      "视频",
+      "城市"
+    ],
     "video": {
       "platform": "youtube",
       "id": "aqz-KE-bpKQ",
@@ -144,11 +210,25 @@
     "created_at": "2026-10-09T16:45:00+08:00",
     "title": "桌面的三件小事",
     "content": "换了新的桌面布局，顺手拍了三张。",
-    "tags": ["日常"],
+    "tags": [
+      "日常"
+    ],
     "images": [
-      { "src": "media/photo-08.svg", "alt": "桌面一角", "caption": "午后的桌面" },
-      { "src": "media/photo-02.svg", "alt": "窗台", "caption": "窗台" },
-      { "src": "media/photo-04.svg", "alt": "杯子与书", "caption": "杯子与书" }
+      {
+        "src": "media/photo-08.svg",
+        "alt": "桌面一角",
+        "caption": "午后的桌面"
+      },
+      {
+        "src": "media/photo-02.svg",
+        "alt": "窗台",
+        "caption": "窗台"
+      },
+      {
+        "src": "media/photo-04.svg",
+        "alt": "杯子与书",
+        "caption": "杯子与书"
+      }
     ],
     "layout": "grid"
   },
@@ -158,6 +238,19 @@
     "created_at": "2026-10-02T11:00:00+08:00",
     "pinned": true,
     "content": "**关于这个站点**\n\n这里是一个没有数据库的微博客：所有内容都存放在 `data/posts.json`，图片放在 `media/`，页面由 GitHub Pages 直接托管。\n\n支持文本、图文、相册、长文章、链接卡片、位置、YouTube / 哔哩哔哩视频、音乐单曲与歌单。想写点什么，点右上角「写点什么」进入发布后台。",
-    "tags": ["置顶", "关于"]
+    "tags": [
+      "置顶",
+      "关于"
+    ]
+  },
+  {
+    "id": "20261109-112125-f22t",
+    "type": "text",
+    "created_at": "2026-11-09T11:20:00+08:00",
+    "title": "",
+    "content": "这个是测试",
+    "tags": [
+      "测试"
+    ]
   }
 ]
