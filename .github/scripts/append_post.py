@@ -21,7 +21,9 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from urllib.parse import urlparse
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 import build  # 同目录：复用 validate / build_feed / site_base_url / parse_time
+import bot_text  # 同目录：聊天消息命令语法解析
 
 ROOT = Path(__file__).resolve().parents[2]
 POSTS = ROOT / "data" / "posts.json"
@@ -34,6 +36,8 @@ MAX_ITEMS = 30
 
 # 只允许这些字段进入 posts.json；id / created_at 由服务端生成，不接受外部传入
 TOP_KEYS = {
+    # bot_text 是机器人入口透传的原始消息，会在 build_post 里展开后被移除
+    "bot_text",
     "type", "title", "content", "tags", "pinned", "place", "lat", "lng", "url",
     "images", "cover", "reading_time", "layout",
     "link", "location", "video", "music",
@@ -179,6 +183,15 @@ def build_post(raw) -> dict:
     if not isinstance(raw, dict):
         raise BadPayload("client_payload.post 必须是对象")
     raw = clean(raw)
+
+    # 机器人入口只透传原始文本（bot_text），命令语法在这里统一展开；
+    # 显式传来的标准字段优先于解析结果。HelpRequested 由 append_posts 处理。
+    if "bot_text" in raw:
+        text = raw.pop("bot_text")
+        for k, v in bot_text.parse_bot_text(text).items():
+            raw.setdefault(k, v)
+        raw = clean(raw)
+
     post = {k: v for k, v in keep(raw, TOP_KEYS).items() if meaningful(v)}
 
     post["type"] = post.get("type") or "text"
@@ -258,29 +271,45 @@ def load_raw():
     return raw
 
 
-def main() -> int:
-    raw = load_raw()
-    if raw is None:
-        print("错误：缺少 client_payload.post（或 POST_JSON）", file=sys.stderr)
-        return 1
-    try:
-        post = build_post(raw)
-    except BadPayload as e:
-        print(f"错误：payload 不合法 —— {e}", file=sys.stderr)
-        return 1
+def append_posts(raws, strict: bool = False):
+    """清洗并批量追加内容。
+
+    返回 results：与 raws 一一对应的 [("ok", post) | ("skip", 原因), ...]。
+    strict=True（单条 dispatch 入口）时，任何一条不合法就整批放弃且不写文件；
+    strict=False（机器人轮询）时逐条跳过坏消息、好消息照常入库，
+    避免一条格式错误的消息卡住 offset 造成反复重试。
+    """
+    prepared, results = [], []
+    for raw in raws:
+        try:
+            post = build_post(raw)
+            prepared.append(post)
+            results.append(("ok", post))
+        except bot_text.HelpRequested as e:
+            results.append(("skip", f"帮助命令（不发布）：{e}"))
+        except (BadPayload, ValueError) as e:
+            results.append(("skip", str(e)))
+
+    if strict and any(s == "skip" for s, _ in results):
+        for s, v in results:
+            if s == "skip":
+                print(f"错误：payload 不合法 —— {v}", file=sys.stderr)
+        return results
+    if not prepared:
+        return results
 
     site = json.loads(SITE.read_text(encoding="utf-8"))
     posts = json.loads(POSTS.read_text(encoding="utf-8"))
     if not isinstance(posts, list):
         print("错误：data/posts.json 顶层不是数组", file=sys.stderr)
-        return 1
+        return [("skip", "posts.json 顶层不是数组") for _ in results]
 
-    for _ in range(20):
-        if not any(p.get("id") == post["id"] for p in posts):
-            break
-        post["id"] = post["id"][:-2] + f"{secrets.randbelow(90) + 10:02d}"
-
-    posts.append(post)
+    for post in prepared:
+        for _ in range(20):
+            if not any(p.get("id") == post["id"] for p in posts):
+                break
+            post["id"] = post["id"][:-2] + f"{secrets.randbelow(90) + 10:02d}"
+        posts.append(post)
     posts.sort(
         key=lambda p: build.parse_time(p.get("created_at", ""))
         or datetime.min.replace(tzinfo=timezone.utc),
@@ -294,24 +323,34 @@ def main() -> int:
         for e in build.errors:
             print(f"[ERROR] {e}", file=sys.stderr)
         print("数据校验未通过，已放弃本次追加（仓库不会被修改）。", file=sys.stderr)
-        return 1
+        return [("skip", "数据校验未通过") for _ in results]
 
     POSTS.write_text(json.dumps(posts, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     FEED.write_text(build.build_feed(site, posts, build.site_base_url(site)), encoding="utf-8")
 
-    print(f"已追加 {post['id']}（type={post['type']}），当前共 {len(posts)} 条内容。")
+    ids = ", ".join(p["id"] for p in prepared)
+    print(f"已追加 {len(prepared)} 条（{ids}），当前共 {len(posts)} 条内容。")
     summary = os.environ.get("GITHUB_STEP_SUMMARY")
     if summary:
         with open(summary, "a", encoding="utf-8") as f:
             f.write(
-                "### 新内容已写入仓库\n\n"
-                f"- id：`{post['id']}`\n"
-                f"- 类型：`{post['type']}`\n"
-                f"- 标题：{post.get('title') or '（无标题）'}\n"
-                f"- 内容总数：{len(posts)} 条\n\n"
-                "GitHub Pages 会在本次提交后自动重新构建。\n"
+                f"### 新内容已写入仓库（{len(prepared)} 条）\n\n"
+                + "".join(
+                    f"- `{p['id']}` · 类型 `{p['type']}` · {(p.get('title') or p.get('content') or '')[:40]}\n"
+                    for p in prepared
+                )
+                + f"\n内容总数：{len(posts)} 条。GitHub Pages 会在本次提交后自动重新构建。\n"
             )
-    return 0
+    return results
+
+
+def main() -> int:
+    raw = load_raw()
+    if raw is None:
+        print("错误：缺少 client_payload.post（或 POST_JSON）", file=sys.stderr)
+        return 1
+    results = append_posts([raw], strict=True)
+    return 0 if results and results[0][0] == "ok" else 1
 
 
 if __name__ == "__main__":

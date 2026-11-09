@@ -1,0 +1,23 @@
+name = "microblog-bot"
+main = "worker.js"
+compatibility_date = "2024-11-01"
+
+# 敏感值请务必用 `wrangler secret put NAME` 写入，不要写在 [vars] 里提交到仓库：
+#   wrangler secret put GH_TOKEN               # Fine-grained PAT，Contents: Read and Write
+#   wrangler secret put TG_SECRET             # 自定义随机串，与 setWebhook 的 secret_token 一致
+#   wrangler secret put TG_ALLOWED            # 你的 chat_id，逗号分隔
+#   wrangler secret put TG_BOT_TOKEN          # 可选，用于回复 /help
+#   wrangler secret put FEISHU_VERIFY_TOKEN  # 可选
+#   wrangler secret put FEISHU_ENCRYPT_KEY   # 可选（推荐）
+#   wrangler secret put FEISHU_ALLOWED       # 可选
+#
+# 部署：
+#   npm i -g wrangler
+#   wrangler login
+#   wrangler deploy
+# 部署后得到 https://microblog-bot.<子域>.workers.dev
+#   Telegram 回调填  https://.../telegram
+#   飞书回调填      https://.../feishu
+
+[vars]
+GH_REPO = "aosky-glitch/aosky-glitch.github.io"

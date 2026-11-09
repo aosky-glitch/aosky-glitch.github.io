@@ -1,0 +1,72 @@
+name: Telegram Bot - poll & append
+
+# 零后端方案：定时轮询 Telegram getUpdates，把消息原文交给
+# .github/scripts/poll_telegram.py → append_post.py，写入 data/posts.json
+# 并重新生成 feed.xml，然后 commit 到 main（Pages 会自动重建）。
+#
+# 相关配置见 BOTS.md「方案 A」。实时方案（webhook）见方案 B。
+# 注意：getUpdates 与 webhook 互斥，二选一，不要同时启用。
+
+on:
+  schedule:
+    # 每 5 分钟一次；分钟偏移 2，避开整点 GitHub Actions 排队高峰。
+    # UTC 时间，与北京时间无关（无需换算）。
+    - cron: '2,7,12,17,22,27,32,37,42,47,52,57 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+# 与 shortcut.yml 共用一个组：两条链路不会同时写 posts.json 造成冲突。
+concurrency:
+  group: microblog-write
+  cancel-in-progress: false
+
+jobs:
+  poll:
+    # fork 本仓库时不要误跑（也没有 secrets）
+    if: github.repository == 'aosky-glitch/aosky-glitch.github.io'
+    runs-on: ubuntu-latest
+    steps:
+      - name: 检出 main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: 准备 Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: 轮询消息并追加内容
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_ALLOWED_CHATS: ${{ secrets.TELEGRAM_ALLOWED_CHATS }}
+          TELEGRAM_ALLOWED_USERS: ${{ secrets.TELEGRAM_ALLOWED_USERS }}
+          BOT_REPLY: '1'
+        run: python3 .github/scripts/poll_telegram.py
+
+      - name: 提交并推送
+        run: |
+          set -e
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/posts.json feed.xml
+          if [ -f .github/bot-state.json ]; then git add .github/bot-state.json; fi
+          if git diff --staged --quiet; then
+            echo "没有变更，跳过提交"
+            exit 0
+          fi
+          git commit -m "post: 来自 Telegram 机器人的新内容"
+          for i in 1 2 3; do
+            if git push origin main; then
+              echo "已推送到 main，Pages 将自动重建"
+              exit 0
+            fi
+            echo "推送冲突，尝试变基后重试 ($i/3)"
+            git fetch origin main
+            git rebase origin/main || git rebase --abort
+          done
+          echo "推送失败"
+          exit 1

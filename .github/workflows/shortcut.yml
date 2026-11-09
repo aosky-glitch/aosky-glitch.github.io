@@ -21,6 +21,11 @@ on:
 permissions:
   contents: write
 
+# 与 telegram.yml 共用一个组，避免两条链路同时写 posts.json 造成冲突。
+concurrency:
+  group: microblog-write
+  cancel-in-progress: false
+
 jobs:
   append:
     runs-on: ubuntu-latest
