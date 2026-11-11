@@ -67,8 +67,9 @@ GitHub 仓库 → **Settings → Secrets and variables → Actions → New repos
 把本仓库的 `.github/workflows/telegram.yml`、`.github/scripts/poll_telegram.py`、`bot_text.py` 推到 `main` 后：
 
 1. 打开 `Actions → Telegram Bot - poll & append`，点 **Run workflow** 手动跑一次；
-2. **首次运行只会同步游标、跳过所有历史消息**（防止把 Bot 创建以来的旧消息一次性发出去），日志里会打印「已跳过 N 条历史消息」；
-3. 之后再给 Bot 发消息，最多 5 分钟就会被处理。
+2. 脚本会建立并提交 `.github/bot-state.json` 状态文件（**队列为空时也会建立**），日志打印「已初始化状态文件，下一条消息会正常发布」；
+3. 只有当状态文件尚不存在、而队列里已堆着旧消息时，那一批才会被当作历史消息跳过，日志打印「已跳过 N 条历史消息」，并给白名单用户回一句「Bot 已连接，请再发一条」；
+4. 之后给 Bot 发消息，最多 5 分钟就会被处理，**不需要再发两条**。
 
 工作流用 `cron: '2,7,12,... * * * *'` 每 5 分钟跑一次（分钟偏移 2，避开 GitHub 整点排队高峰，时间为 UTC，不用换算北京时间）。没有新消息时不会产生任何 commit。
 
@@ -83,6 +84,7 @@ Bot 会回一条 `✅ 已发布（text）· 20261109-...`；约 20～30 秒后�
 ### 注意事项
 
 - **群里用**：默认 Bot 开启 privacy mode，只能收到 `/命令` 或 @它 的消息。要么在 @BotFather 用 `/setprivacy` 关掉，要么每条都 @Bot。
+- **Secret 必须放对位置**：是 **Repository secrets**（`Settings → Secrets and variables → Actions` 上半区），不是 Environment / Dependabot secrets；名字是 `TELEGRAM_BOT_TOKEN`，不是方案 B 的 `TG_BOT_TOKEN`。放错时脚本读不到，日志会打一条黄色 `::warning::`，但**工作流仍显示绿色成功**——所以「绿色 ≠ 配置生效」，要点开 run 看 Python 步骤的输出。
 - **不能同时设 webhook**：若之前跑过方案 B，先执行 `curl "https://api.telegram.org/bot<TOKEN>/deleteWebhook"`。
 - **公开仓库的定时工作流会在 60 天无仓库活动后自动禁用**。很久不发内容后突然不生效，去 Actions 页重新启用即可（改一下 cron 值再提交也会重新激活）。这是 GitHub 的官方限制，不是脚本故障。
 - GitHub 明确说明定时任务在高负载时**可能延迟甚至跳过一轮**，所以整点前后别指望精确 5 分钟。要秒级就用方案 B。
@@ -217,6 +219,9 @@ iOS 快捷指令 ────────────── 直接 POST /dispatc
 | --- | --- |
 | 消息发出去但站点没变 | 去 `Actions` 看对应工作流；`?cb=时间戳` 绕过 CDN 缓存；确认 `data/posts.json` 条数是否增加 |
 | Telegram 轮询报 `Conflict: webhook is active` | 已设 webhook，执行 `deleteWebhook`；或改用方案 B（两者互斥） |
+| Actions 日志显示 `未配置 TELEGRAM_BOT_TOKEN` | Secret 没建在 **Repository secrets**、名字写错（方案 A 是 `TELEGRAM_BOT_TOKEN`，不是方案 B 的 `TG_BOT_TOKEN`）、或刚创建还没轮到下一次定时；改完点 **Run workflow** 立即验证 |
+| Actions 日志显示 `未配置 TELEGRAM_ALLOWED_CHATS / ...` | 白名单是强制的，至少配一个；私聊 chat_id 为正数、群组为负数 |
+| Actions 日志显示 `无新消息` | Secret 已生效、Bot 也通了，只是队列里没有待处理消息；给 Bot 发一条**私聊**再触发一次 |
 | Telegram 消息完全没反应 | 白名单 chat_id 不对；群里 privacy mode；定时工作流被 60 天规则禁用；看 Actions 日志 |
 | 飞书保存回调地址失败 | Worker 没部署 / 路径不是 `/feishu`；`GET https://...workers.dev/` 应先返回 JSON；配了 Encrypt Key 但 Worker 没设对应 secret |
 | 飞书保存成功、发消息没发布 | 应用改配置后**没发布版本**；没订阅 `im.message.receive_v1`；`wrangler tail` 看日志；签名/时间戳校验失败会返回 401 |
