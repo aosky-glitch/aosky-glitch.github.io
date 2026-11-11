@@ -96,10 +96,13 @@ def main() -> int:
     allowed_chats = csv_env("TELEGRAM_ALLOWED_CHATS")
     allowed_users = csv_env("TELEGRAM_ALLOWED_USERS")
     if not token:
-        print("未配置 TELEGRAM_BOT_TOKEN，跳过本次轮询（不是错误）。")
+        print("::warning::未配置仓库 Secret TELEGRAM_BOT_TOKEN，轮询已跳过。请到 "
+              "Settings → Secrets and variables → Actions → Repository secrets 添加"
+              "（注意不是 Environment secrets / Dependabot secrets）。")
         return 0
     if not allowed_chats and not allowed_users:
-        print("未配置 TELEGRAM_ALLOWED_CHATS / TELEGRAM_ALLOWED_USERS，为安全起见拒绝发布。")
+        print("::warning::未配置 TELEGRAM_ALLOWED_CHATS / TELEGRAM_ALLOWED_USERS，"
+              "为安全起见拒绝发布。请至少配置其中一个白名单。")
         return 0
 
     do_reply = os.environ.get("BOT_REPLY", "1") not in ("0", "false", "no", "")
@@ -116,13 +119,19 @@ def main() -> int:
         desc = str(res.get("description", ""))
         print(f"getUpdates 失败：{desc}")
         if "webhook" in desc.lower() or "conflict" in desc.lower():
-            print("提示：getUpdates 与 webhook 互斥。若已配置 webhook，请先调用 deleteWebhook，")
-            print("      或改用 bots/worker.js 的实时方案（见 BOTS.md）。")
+            print("::warning::getUpdates 与 webhook 互斥。若已配置 webhook，请先调用 deleteWebhook，"
+                  "或改用 bots/worker.js 的实时方案（见 BOTS.md）。")
         return 1
 
     updates = res.get("result") or []
     if not updates:
-        print("无新消息。")
+        # 队列为空时也建立状态文件：否则 state 一直不存在，下一次真正收到消息
+        # 会被误判为 first_run 而整批跳过，用户必须发两条才能发布。
+        if first_run:
+            save_state(state)
+            print("无新消息；已初始化状态文件，下一条消息会正常发布。")
+        else:
+            print("无新消息。")
         return 0
 
     updates.sort(key=lambda u: int(u.get("update_id", 0)))
@@ -133,6 +142,14 @@ def main() -> int:
         state["telegram_offset"] = last_update_id + 1
         save_state(state)
         print(f"首次运行：已跳过 {len(updates)} 条历史消息，游标设为 {last_update_id + 1}。")
+        # 给最近一条消息的白名单作者回一句，让「配置成功但没发布」这件事可见。
+        last = updates[-1].get("message") or {}
+        cid = str((last.get("chat") or {}).get("id", ""))
+        uid = str((last.get("from") or {}).get("id", ""))
+        if (allowed_chats and cid in allowed_chats) or (allowed_users and uid in allowed_users):
+            reply(token, (last.get("chat") or {}).get("id"),
+                  "✅ Bot 已连接。历史消息已忽略，请再发一条即可发布到博客。", do_reply)
+            print("  - 已向白名单用户发送连接确认")
         return 0
 
     seen = set(state["seen_ids"])
